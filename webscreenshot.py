@@ -132,6 +132,7 @@ SHELL_EXECUTION_ERROR = -1
 PHANTOMJS_HTTP_AUTH_ERROR_CODE = 2
 CHROMX_RENDER_TIMOUT_ERROR = 3
 CHROMX_CONNECTION_ERROR = 4
+CHROMX_OUTPUT_FILE_ERROR = 5
 
 # Handful patterns
 p_ipv4_elementary = '(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})'
@@ -649,12 +650,14 @@ def launch_cromx_subprocess(logger, url, options):
             elif retval == CHROMX_CONNECTION_ERROR:
                 logger.debug("Tab %s's websocket is not responding, it has been killed." % tabData["id"])
                 logger.error("Screenshot somehow failed.\n")
+            elif retval == CHROMX_OUTPUT_FILE_ERROR:
+                logger.debug("An error ocurred while saving screenshot file.")
+                logger.error("Screenshot somehow failed.\n")
+            return SHELL_EXECUTION_ERROR
         else:
             logger.debug("Tab %s ended normally." % tabData["id"])
             logger.info("Screenshot OK.\n")
-
-        return retval
-
+            return SHELL_EXECUTION_OK
     else:
         logger.error("Failed to spawn a new browser instance [Devtools server responded with status code: %d]." % response.status_code)
         return SHELL_EXECUTION_ERROR
@@ -927,15 +930,10 @@ async def chromx_screenshot(
             await websocket.send(request)
             logger.debug("Page domain notifications disabled.")
             # Wait for the screenshot data:
-            while True:
-                response = await websocket.recv()
-                data = json.loads(response)
-                if "id" in data and data["id"] == 60:
-                    break
 
             # Wait for the user defined screenshot delay:
             if delay > 0:
-                logger.info("Wating %s seconds before taking the screenshot..." % delay)
+                logger.info("Waiting %s seconds before taking the screenshot...\n" % delay)
             await asyncio.sleep(delay + 0.5)
 
             # Take screeshot:
@@ -1014,6 +1012,7 @@ async def chromx_screenshot(
                 f.close()
             except Exception as e:
                 logger.error(str(e))
+                return CHROMX_OUTPUT_FILE_ERROR
 
             # Unload tab
             response = requests.get("%s:%d/json/close/%s" % (DEVTOOLS_SERVER, DEVTOOLS_PORT, tabID))
