@@ -1,6 +1,12 @@
 webscreenshot
 =============
 
+This is an extended fork from the original [webscreenshot](https://github.com/maaaaz/webscreenshot) script.
+-----------------------------------------------------------------------------------------------------------
+**It adds full support for the Chromium based browsers, and extends some other functions.**
+
+**Thanks to [maaaaz](https://github.com/maaaaz) for this awesome tool.**
+
 Description
 -----------
 A simple script to screenshot a list of websites, based on the [`url-to-image`](https://github.com/kimmobrunfeldt/url-to-image/) PhantomJS script.
@@ -9,13 +15,13 @@ Features
 --------
 * Integrating url-to-image *'lazy-rendering'* for AJAX resources
 * Fully functional on Windows and Linux systems
-* Cookie and custom HTTP header definition support for the PhantomJS renderer
+* Cookie and custom HTTP header definition support for the PhantomJS and ChromX renderers
 * Multiprocessing and killing of unresponding processes after a user-definable timeout
 * Accepting several formats as input target
 * Customizing screenshot size (width, height), format and quality
 * Mapping useful options of PhantomJS such as ignoring ssl error, proxy definition and proxy authentication, HTTP Basic Authentication
 * Supports multiple renderers: 
-  * **PhantomJS**, which is legacy and [abandoned](https://groups.google.com/forum/#!topic/phantomjs/9aI5d-LDuNE) but the one still producing the best results
+  * **PhantomJS**, which is legacy and [abandoned](https://groups.google.com/forum/#!topic/phantomjs/9aI5d-LDuNE)
   * **Chromium, Chrome and Edge Chromium**, which will replace PhantomJS
   * **Firefox** can also be used as a renderer but has some serious limitations (_so don't use it for the moment_):
     * Impossibility to perform multiple screenshots at the time: no multi-instance of the firefox process
@@ -256,8 +262,7 @@ Requirements
 ------------
 * A Python interpreter with version >= 3.6.1
 * The webscreenshot python script: 
-  * The **easiest way** to setup it: `pip install webscreenshot` and then directly use `$ webscreenshot` 
-  * Or git clone that repository and `pip install -r requirements.txt` and then `python webscreenshot.py`
+  * Git clone this repository, `pip install -r requirements.txt` and then `python webscreenshot.py`
 * The PhantomJS tool with at least version 2: follow the [installation guide](https://github.com/maaaaz/webscreenshot/wiki/Phantomjs-installation) and check the [FAQ](https://github.com/maaaaz/webscreenshot/wiki/FAQ) if necessary
 * Chrome, Chromium or Firefox > 57 if you want to use one of these renderers
 * `xvfb` if you want to run `webscreenshot` in an headless OS: use the `--no-xserver` webscreenshot option to ease everything
@@ -265,6 +270,7 @@ Requirements
 
 Changelog
 ---------
+* version 3.0.0 - 05/12/2020: Full ChromX browsers support added (switched to Devtools protocol implementation)
 * version 2.91 - 05/08/2020: Multiprotocol mode fix
 * version 2.9 - 01/26/2020: Few fixes
 * version 2.8 - 01/11/2020: Few fixes, ajax timeouts + crop + label size + label font options added, default values for ajaxTimeout and maxTimeout changed 
@@ -300,4 +306,5 @@ If not, see http://www.gnu.org/licenses/.
 
 Contact
 -------
-* Thomas Debize < tdebize at mail d0t com >
+* Original author: Thomas Debize < tdebize at mail d0t com >
+* Fork author: zonicdoe@protonmail.com

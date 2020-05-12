@@ -52,7 +52,7 @@ else:
     izip = zip
 
 # Script version
-VERSION = '2.91'
+VERSION = '3.0.0'
 
 # Options definition
 parser = argparse.ArgumentParser()
